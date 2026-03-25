@@ -14,5 +14,6 @@ pipeline {
                 sh 'docker run -e CI=true gopi/docker-react npm run test'
             }
         }
+        stage()
     } 
 }
