@@ -18,7 +18,7 @@ pipeline {
             when {
                 anyOf {
                   branch 'master'
-                //   branch 'main'
+                  branch 'main'
                 }
                 
             }
