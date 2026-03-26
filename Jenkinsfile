@@ -25,7 +25,11 @@ pipeline {
             */
             
             steps {
+
+                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-jenkins-creds']]) {
+                
                 sh '''
+
                 zip -r app.zip .
 
                 aws s3 cp app.zip s3://elasticbeanstalk-ap-south-1-382876614364/docker_react/app.zip
@@ -35,6 +39,8 @@ pipeline {
                 aws elasticbeanstalk update-environment --environment-name Dockerreact-env-1 --version-label v-$BUILD_NUMBER
                 
                 '''
+                }
+
             }
         }
     } 
