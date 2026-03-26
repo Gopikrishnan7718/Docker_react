@@ -16,7 +16,11 @@ pipeline {
         }
         stage('deploy') {
             when {
-                branch 'master'
+                anyOf {
+                  branch 'master'
+                //   branch 'main'
+                }
+                
             }
             
             steps {
