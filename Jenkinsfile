@@ -14,6 +14,22 @@ pipeline {
                 sh 'docker run -e CI=true gopi/docker-react npm run test'
             }
         }
-        stage()
+        stage('deploy') {
+            when {
+                branch 'master'
+            }
+            
+            steps {
+                sh '''
+                zip -r app.zip .
+
+                aws s3 cp app.zip s3://elasticbeanstalk-ap-south-1-382876614364/docker_react/app.zip
+
+                aws elasticbeanstalk create-application-version --application-name docker_react --version-label v-$BUILD_NUMBER --source-bundle S3Bucket=elasticbeanstalk-ap-south-1-382876614364,S3Key=docker_react/app.zip
+
+                aws elasticbeanstalk update-environment --environment-name Dockerreact-env-1 --version-label v-$BUILD_NUMBER
+
+            }
+        }
     } 
 }
