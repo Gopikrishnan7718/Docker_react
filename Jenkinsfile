@@ -15,13 +15,14 @@ pipeline {
             }
         }
         stage('deploy') {
-            \\when {
+            /*when {
                 anyOf {
                   branch 'master'
                   branch 'main'
                 }
                 
-            }\\
+            }
+            */
             
             steps {
                 sh '''
