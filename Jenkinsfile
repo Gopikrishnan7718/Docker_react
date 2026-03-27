@@ -39,7 +39,7 @@ pipeline {
 
                 aws elasticbeanstalk create-application-version --application-name docker_react --version-label v-$BUILD_NUMBER --source-bundle S3Bucket=elasticbeanstalk-ap-south-1-382876614364,S3Key=docker_react/app.zip
 
-                #aws elasticbeanstalk wait application-version-processed --application-name docker_react --version-label v-$BUILD_NUMBER
+                
 
                 aws elasticbeanstalk update-environment --environment-name Dockerreact-env --version-label v-$BUILD_NUMBER
                 
