@@ -9,7 +9,7 @@ pipeline {
 
         stage('Build docker image') {
             steps {
-                sh 'docker build -t gopi/docker-react .'
+                sh 'docker build -t gopi/docker-react -f Dockerfile.dev .'
             }
         }
         stage('Run tests') {
