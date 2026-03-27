@@ -9,7 +9,7 @@ pipeline {
 
         stage('Build docker image') {
             steps {
-                sh 'docker build -t gopi/docker-react -f Dockerfile.dev .'
+                sh 'docker build -t gopi/docker-react Dockerfile .'
             }
         }
         stage('Run tests') {
@@ -39,7 +39,7 @@ pipeline {
 
                 aws elasticbeanstalk create-application-version --application-name docker_react --version-label v-$BUILD_NUMBER --source-bundle S3Bucket=elasticbeanstalk-ap-south-1-382876614364,S3Key=docker_react/app.zip
 
-                aws elasticbeanstalk update-environment --environment-name Dockerreact-env-1 --version-label v-$BUILD_NUMBER
+                aws elasticbeanstalk update-environment --environment-name Dockerreact-env --version-label v-$BUILD_NUMBER
                 
                 '''
                 }
