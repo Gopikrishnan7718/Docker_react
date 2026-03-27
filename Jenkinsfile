@@ -9,12 +9,12 @@ pipeline {
 
         stage('Build docker image') {
             steps {
-                sh 'docker build -t gopi/docker-react -f Dockerfile.dev .'
+                sh 'docker build -t gopi/docker-react-dev -f Dockerfile.dev .'
             }
         }
         stage('Run tests') {
             steps {
-                sh 'docker run -e CI=true gopi/docker-react npm run test'
+                sh 'docker run -e CI=true gopi/docker-react-dev npm run test'
             }
         }
         stage('deploy') {
