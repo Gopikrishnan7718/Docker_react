@@ -40,28 +40,33 @@ pipeline {
                 aws elasticbeanstalk create-application-version --application-name docker_react --version-label v-$BUILD_NUMBER --source-bundle S3Bucket=elasticbeanstalk-ap-south-1-382876614364,S3Key=docker_react/app.zip
 
                       # 🔥 WAIT LOGIC (THIS IS WHAT YOU ADD)
-                            for i in {1..30}; do
-                                status=$(aws elasticbeanstalk describe-application-versions \
+                           MAX_RETRIES=30
+                            COUNT=0
+
+                            while [ $COUNT -lt $MAX_RETRIES ]; do
+                            status=$(aws elasticbeanstalk describe-application-versions \
                                 --application-name docker_react \
                                 --version-label v-$BUILD_NUMBER \
                                 --query "ApplicationVersions[0].Status" \
                                 --output text)
 
-                                echo "Status: $status"
+                            echo "Current status: $status"
 
-                                if [ "$status" = "PROCESSED" ]; then
+                            if [ "$status" = "PROCESSED" ]; then
                                 echo "Version is ready"
                                 break
-                                fi
+                            fi
 
-                                sleep 10
+                            sleep 10
+                            COUNT=$((COUNT+1))
                             done
 
-                            # Optional safety check
                             if [ "$status" != "PROCESSED" ]; then
-                                echo "Timeout waiting for version processing"
-                                exit 1
+                            echo "Timeout waiting for version processing"
+                            exit 1
                             fi
+
+   
 
                 aws elasticbeanstalk update-environment --environment-name Dockerreact-env --version-label v-$BUILD_NUMBER
                 
